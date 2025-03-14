@@ -1,0 +1,23 @@
+import React from "react";
+import Sidebar from "../Components/Sidebar";
+import Robo from "../assets/Robo.svg"
+function Dashboard() {
+  return (
+    <div>
+      <div className=" flex flex-col  justify-start space-y-3 py-4 px-6">
+        <h1 className="font-bold text-4xl">Welcome Ahmed</h1>
+        <h5 className="font-bold text-gray-500">Dashboard</h5>
+      </div>
+      <div className="bg-slate-300 rounded-lg px-5 flex justify-around items-center">
+        <div className="flex flex-col justify-center items-start space-y-7 " >
+          <h1 className="text-4xl font-bold ">AI product recommendation.</h1>
+          <button className="bg-slate-900 rounded-md text-white h-15 w-25 p-2 font-bold ">Let's Go</button>
+        </div>
+        <img src={Robo} alt="AI" className="" />
+      </div>
+      
+    </div>
+  );
+}
+
+export default Dashboard;
