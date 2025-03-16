@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const CardStat = ({ stat }) => {
   const { title, value, percentage, icon } = stat;
-  console.log(title, value, percentage, icon);
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-3 pb-2">
