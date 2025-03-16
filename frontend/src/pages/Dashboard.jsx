@@ -11,7 +11,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
 import { getRevenues } from "../api/productApi";
-import CardStat from "../My_components/CardStat";
+import CardStat from "../myComponents/CardStat";
 
 const DashboardPage = () => {
   const [revenue, setReveunue] = useState({
@@ -84,7 +84,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="hidden flex-col md:flex ">
+    <div className="hidden flex-col md:flex bg-gray-100">
       <div>
         <div className="flex flex-col justify-start space-y-3 py-4 px-6">
           <h1 className="font-bold text-4xl">Welcome Ahmed</h1>
@@ -97,16 +97,13 @@ const DashboardPage = () => {
               Let's Go
             </button>
           </div>
-          <div>
-
-          <img src={Robo} alt="AI" className="object-contain" />
-          </div>
+          <img src={Robo} alt="AI" className="" />
         </div>
       </div>
       <div className="flex-1 space-y-4 p-8 pt-6">
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsContent value="overview" className="space-y-4">
-            <div className="grid grid-cols-3 w-[100%] gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-3 w-[130%] gap-4 md:grid-cols-2 lg:grid-cols-4">
               {data.map((stat, index) => (
                 <CardStat key={index} stat={stat} />
               ))}

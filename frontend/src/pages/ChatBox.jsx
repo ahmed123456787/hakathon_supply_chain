@@ -3,27 +3,31 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { sendMessage as SendChat } from "../api/chatApi";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([
     {
-      id: 1,
       sender: "ME",
       text: "Je suis un fournisseur vendant des produits électroniques...",
     },
     {
-      id: 2,
       sender: "AI",
       text: "Basé sur vos données, je recommande d'acheter 40 smartphones...",
     },
   ]);
   const [input, setInput] = useState("");
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!input.trim()) return;
-    const newMessage = { id: messages.length + 1, sender: "ME", text: input };
-    setMessages([...messages, newMessage]);
+    const newMessages = [...messages, { text: input, sender: "ME" }];
     setInput("");
+
+    setMessages(newMessages);
+    const response = await SendChat(input);
+    console.log("response", response);
+    const newMessage = { text: response.response, sender: "AI" };
+    setMessages([...newMessages, newMessage]);
   };
 
   return (
@@ -31,7 +35,7 @@ export default function ChatBox() {
       <Card className="p-4 space-y-4 h-[85%] overflow-y-auto border-none shadow-none">
         {messages.map((msg) => (
           <div
-            key={msg.id}
+            key={msg.text}
             className={`flex items-center ${
               msg.sender === "ME" ? "justify-end" : "justify-start"
             }`}

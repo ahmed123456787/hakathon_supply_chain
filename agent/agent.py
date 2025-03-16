@@ -7,7 +7,7 @@ from langgraph.graph import StateGraph, END
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
-from agent.chroma_db import VectorDB
+from chroma_db import VectorDB
 
 load_dotenv()   
 
@@ -48,14 +48,18 @@ class Agent:
         tool_calls = state['messages'][-1].tool_calls
         print("Tool calls: ", tool_calls)
         results = []
-        for t in tool_calls:
-            print(f"Calling: {t['name']}")
-            if t['name'] not in self.tools:  # Check for bad tool name
-                print("\n ....bad tool name....")
-                result = "bad tool name, retry"  # Instruct LLM to retry
-            else:
-                result = self.tools[t['name']].invoke(t['args'])  # Invoke the tool properly
-            results.append(ToolMessage(tool_call_id=t['id'], name=t['name'], content=str(result)))
+        if not tool_calls:
+            # If no tool calls are detected, return a default message
+            results.append(ToolMessage(tool_call_id="default", name="default", content="Sorry, I didn't understand that. Can you please rephrase?"))
+        else:
+            for t in tool_calls:
+                print(f"Calling: {t['name']}")
+                if t['name'] not in self.tools:  # Check for bad tool name
+                    print("\n ....bad tool name....")
+                    result = "bad tool name, retry"  # Instruct LLM to retry
+                else:
+                    result = self.tools[t['name']].invoke(t['args'])  # Invoke the tool properly
+                results.append(ToolMessage(tool_call_id=t['id'], name=t['name'], content=str(result)))
         print("Back to the model!")
         return {'messages': results}
 
@@ -103,40 +107,21 @@ def search_positive_reviews() -> str:
     return VectorDB("order").search(" ".join(postive_feedback))
 
 
-prompt = """You are a profit optimization assistant. Follow these steps:
+prompt = """You are a profit optimization assistant. Analyze the user's query carefully and decide which action to take. 
 
-1. FIRST use search_history(collection_name="product") to get all products.
-2. For EACH product, call calculate_profit(price, cost).
-3. THEN use search_most_frequent_product() to get top-selling items.
-4. THEN use search_positive_reviews() to get top-rated items.
-5. Recommend ONLY products that meet **at least 2 of these 3 criteria**:
-   - High profit margin  
-   - Frequently sold  
-   - Highly rated  
+- If the user asks about product profitability or best products, use **all available tools**: `search_history(collection_name="product")`, `calculate_profit(price, cost)`, `search_most_frequent_product()`, and `search_positive_reviews()`.
+- If the user asks specifically about best-selling items, use `search_most_frequent_product()`.
+- If the user asks specifically about positive reviews, use `search_positive_reviews()`.
+- If unsure, ask the user for clarification.
 
-Format the response like a message for a chat application:
+Format the response like a message for a chat application."""
 
-"📢 **Recommended Products for profit Increase**  
 
-Based on sales volume, profit margins, and customer reviews, we recommend increasing stock for the following products:  
-
-✅ **Smartwatch  
-💰 **Profit Margin:** 65.5% (Price: $200.00, Cost: $69.00)  
-📊 **Sales Volume:** High  
-⭐ **Customer Reviews:** Positive  
-🔍 **Reason:** This product is highly profitable, frequently sold, and well-reviewed—making it an ideal candidate for restocking.  
-
-✅ **Monitor
-💰 **Profit Margin:** 50.0% (Price: $300.00, Cost: $150.00)  
-📊 **Sales Volume:** High  
-⭐ **Customer Reviews:** Neutral  
-🔍 **Reason:** While not the highest-rated, this product has strong sales and a good profit margin, making it a solid choice for increasing stock.  
-"""
 
 
 abot = Agent(model, [search_history,calculate_profit,search_most_frequent_product,search_positive_reviews], system=prompt)  
 
 # Run the agent
-messages = [HumanMessage(content="What product(s) should noy I buy more of to raise my profits?")]  
-result = abot.graph.invoke({"messages": messages})  
-print(result['messages'][-1].content)
+# messages = [HumanMessage(content="What product(s) should noy I buy more of to raise my profits?")]  
+# result = abot.graph.invoke({"messages": messages})  
+# print(result['messages'][-1].content)

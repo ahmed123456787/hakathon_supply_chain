@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./My_components/Sidebar";
+import Sidebar from "./myComponents/Sidebar";
 import Dashboard from "./pages/Dashboard";
-import InventoryManagement from "./pages/Product_managment";
+import InventoryManagement from "./pages/Inventory";
 import ChatBox from "./pages/ChatBox";
 
 function App() {
