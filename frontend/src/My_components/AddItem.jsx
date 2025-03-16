@@ -15,7 +15,6 @@ const NewItemForm = ({ onClose, onAddItem, onUpdateItem, editingItem=null }) => 
       weight: "",
       description: "",
       primaryImage: null,
-      secondaryImages: [null],
     }
   );
 
@@ -23,16 +22,11 @@ const NewItemForm = ({ onClose, onAddItem, onUpdateItem, editingItem=null }) => 
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e, type) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (type === "primary") {
+
       setFormData({ ...formData, primaryImage: file });
-    } else {
-      setFormData({
-        ...formData,
-        secondaryImages: [...formData.secondaryImages, file],
-      });
-    }
+    
   };
 
   const handleSubmit = (e) => {
@@ -57,7 +51,7 @@ const NewItemForm = ({ onClose, onAddItem, onUpdateItem, editingItem=null }) => 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="bg-white p-5 rounded-lg shadow-lg w-100 relative">
+      <div className="bg-white px-5 py-2 rounded-lg shadow-lg w-100  relative">
         {/* Close Button */}
         <button
           className="absolute top-4 right-4  text-gray-600 hover:text-gray-900"
@@ -94,7 +88,7 @@ const NewItemForm = ({ onClose, onAddItem, onUpdateItem, editingItem=null }) => 
           <input
             type="file"
             className="hidden"
-            onChange={(e) => handleFileChange(e, "primary")}
+            onChange={(e) => handleFileChange(e)}
           />
         </div>
 
@@ -149,29 +143,7 @@ const NewItemForm = ({ onClose, onAddItem, onUpdateItem, editingItem=null }) => 
           />
 
           {/* Secondary Images Upload */}
-          <div className="mb-4">
-            <label className="block font-semibold text-slate-900">
-              Secondary Images
-            </label>
-            <div className="flex gap-2">
-              {/* {formData.secondaryImages.map((img, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(img)}
-                  alt="Secondary"
-                  className="w-12 h-12 object-cover rounded-md border"
-                />
-              ))} */}
-              <div className="w-12 h-12 border rounded-md flex items-center justify-center cursor-pointer bg-gray-100">
-                <Upload size={20} className="text-gray-400" />
-              </div>
-              <input
-                type="file"
-                className="hidden"
-                onChange={(e) => handleFileChange(e, "secondary")}
-              />
-            </div>
-          </div>
+          
 
           {/* Buttons */}
           <Button type="submit" className="w-full bg-slate-900 text-white py-2 mb-2" onClick={handleSubmit}>
