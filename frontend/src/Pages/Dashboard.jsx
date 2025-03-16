@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Robo from "../assets/Robo.svg";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Card,
   CardContent,
@@ -8,18 +10,35 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/components/date-range-picker";
-import { MainNav } from "@/components/main-nav";
 import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
-import { Search } from "@/components/search";
-import TeamSwitcher from "@/components/team-switcher";
-import { UserNav } from "@/components/user-nav";
 
 export default function DashboardPage() {
+  const [totalRevenues, setTotalRevenues] = useState([]);
+  useEffect(() => {
+    const fetchSales = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5298/api/Order/GetTotalRevenuesAsync"
+        );
+        const formattedData = response.data.map((data) => ({
+          currentTotalRevenue: `${data.currentTotalRevenue.toFixed(2)}`,
+          email: sale.email,
+          amount: `+$${sale.totalAmount.toFixed(2)}`, // Formater le montant
+          fallback: getInitials(sale.name),
+        }));
+        console.log(formattedData);
+        setTotalRevenues(formattedData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des ventes :", error);
+      }
+    };
+
+    fetchSales();
+  }, []);
   return (
     <>
-      <div className="hidden flex-col md:flex">
+      <div className="hidden flex-col md:flex bg-gray-100">
         <div>
           <div className=" flex flex-col  justify-start space-y-3 py-4 px-6">
             <h1 className="font-bold text-4xl">Welcome Ahmed</h1>
@@ -40,7 +59,7 @@ export default function DashboardPage() {
         <div className="flex-1 space-y-4 p-8 pt-6">
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-3 w-[130%]    gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
                   {
                     title: "Total Revenue",
@@ -51,8 +70,8 @@ export default function DashboardPage() {
                     ),
                   },
                   {
-                    title: "Subscriptions",
-                    value: "+2350",
+                    title: "Sales",
+                    value: "+23,504",
                     percentage: "+180.1% from last month",
                     icon: (
                       <>
@@ -63,8 +82,8 @@ export default function DashboardPage() {
                     ),
                   },
                   {
-                    title: "Sales",
-                    value: "+12,234",
+                    title: "Today Sales",
+                    value: "+123",
                     percentage: "+19% from last month",
                     icon: (
                       <>
@@ -73,15 +92,9 @@ export default function DashboardPage() {
                       </>
                     ),
                   },
-                  {
-                    title: "Active Now",
-                    value: "+573",
-                    percentage: "+201 since last hour",
-                    icon: <path d="M22 12h-4l-3 9L9 3l-3 9H2" />,
-                  },
                 ].map((stat, index) => (
                   <Card key={index}>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 space-x-3 pb-2">
                       <CardTitle className="text-sm font-medium">
                         {stat.title}
                       </CardTitle>

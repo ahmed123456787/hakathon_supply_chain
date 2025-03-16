@@ -1,34 +1,51 @@
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-  } from "@/components/ui/avatar";
-  
-  export function RecentSales() {
-    const salesData = [
-      { name: "Olivia Martin", email: "olivia.martin@email.com", amount: "+$1,999.00", avatar: "/avatars/01.png", fallback: "OM" },
-      { name: "Jackson Lee", email: "jackson.lee@email.com", amount: "+$39.00", avatar: "/avatars/02.png", fallback: "JL" },
-      { name: "Isabella Nguyen", email: "isabella.nguyen@email.com", amount: "+$299.00", avatar: "/avatars/03.png", fallback: "IN" },
-      { name: "William Kim", email: "will@email.com", amount: "+$99.00", avatar: "/avatars/04.png", fallback: "WK" },
-      { name: "Sofia Davis", email: "sofia.davis@email.com", amount: "+$39.00", avatar: "/avatars/05.png", fallback: "SD" },
-    ];
-  
-    return (
-      <div className="space-y-8">
-        {salesData.map((sale, index) => (
-          <div key={index} className="flex items-center">
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={sale.avatar} alt="Avatar" />
-              <AvatarFallback>{sale.fallback}</AvatarFallback>
-            </Avatar>
-            <div className="ml-4 space-y-1">
-              <p className="text-sm font-medium leading-none">{sale.name}</p>
-              <p className="text-sm text-muted-foreground">{sale.email}</p>
-            </div>
-            <div className="ml-auto font-medium">{sale.amount}</div>
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import axios from "axios";
+import { useEffect, useState } from "react";
+export function RecentSales() {
+  const [salesData, setSalesData] = useState([]);
+  const getInitials = (name) => {
+    const words = name.split(" ");
+    if (words.length > 1) {
+      return words[0][0] + words[1][0]; // Deux premières lettres des deux mots
+    } else {
+      return name.slice(0, 2).toUpperCase(); // Deux premières lettres du seul mot
+    }
+  };
+  useEffect(() => {
+    const fetchSales = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5298/api/Order/GetRecentSalesAsync"
+        );
+        const formattedData = response.data.map((sale) => ({
+          name: sale.name,
+          email: sale.email,
+          amount: `+$${sale.totalAmount.toFixed(2)}`, // Formater le montant
+          fallback: getInitials(sale.name),
+        }));
+        console.log(formattedData);
+        setSalesData(formattedData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des ventes :", error);
+      }
+    };
+
+    fetchSales();
+  }, []);
+  return (
+    <div className="space-y-8">
+      {salesData.map((sale, index) => (
+        <div key={index} className="flex items-center">
+          <Avatar className="h-9 w-9">
+            <AvatarFallback>{sale.fallback}</AvatarFallback>
+          </Avatar>
+          <div className="ml-4 space-y-1">
+            <p className="text-sm font-medium leading-none">{sale.name}</p>
+            <p className="text-sm text-muted-foreground">{sale.email}</p>
           </div>
-        ))}
-      </div>
-    );
-  }
-  
+          <div className="ml-auto font-medium">{sale.amount}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
