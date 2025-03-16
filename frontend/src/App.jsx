@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./My_components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import InventoryManagement from "./pages/Product_managment";
+import ChatBox from "./pages/ChatBox";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               path="/inventory-managment"
               element={<InventoryManagement />}
             />
+            <Route path="/ai-agent" element={<ChatBox />} />
           </Routes>
         </div>
       </div>

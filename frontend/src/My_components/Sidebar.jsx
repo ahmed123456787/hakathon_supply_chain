@@ -39,7 +39,7 @@ const menuItems = [
 ];
 function Sidebar() {
   return (
-    <aside className="h-screen w-[18%] flex flex-col justify-between">
+    <aside className="h-screen w-[20%] flex flex-col justify-between">
       <nav className="flex flex-col">
         <div className="bg-slate-900 rounded-xl p-5 my-5 mx-2 text-white flex flex-col  space-y-1 justify-center items-start">
           <h1 className="font-bold text-xl">AI Supply Chain</h1>
