@@ -1,25 +1,26 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState,useEffect } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-
+import { getMonthsOverview } from "../api/productApi";
 export function Overview() {
-  const data = useMemo(() => {
-    return [
-      { name: "Jan", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Feb", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Mar", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Apr", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "May", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Jun", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Jul", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Aug", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Sep", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Oct", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Nov", total: Math.floor(Math.random() * 5000) + 1000 },
-      { name: "Dec", total: Math.floor(Math.random() * 5000) + 1000 },
-    ];
-  }, []);
+  const [data,setData]=useState([])
+  useEffect(()=>{
+    async function fetchingdata() {
+      const fetchedData=await getMonthsOverview()
+      const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      const  fromattedData=fetchedData.map((item) => ({
+        name: months[item.month - 1], // Convert month number to name
+        total: item.orders, // Use orders as total
+      }));
+      setData(fromattedData)
+    }
+    fetchingdata();
+  },[])
+
 
   return (
     <ResponsiveContainer width="100%" height={350}>
