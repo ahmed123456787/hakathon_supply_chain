@@ -98,8 +98,7 @@ const DashboardPage = () => {
             </button>
           </div>
           <div>
-
-          <img src={Robo} alt="AI" className="object-contain" />
+            <img src={Robo} alt="AI" className="object-contain" />
           </div>
         </div>
       </div>
