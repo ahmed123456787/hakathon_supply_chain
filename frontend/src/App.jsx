@@ -3,6 +3,7 @@ import Sidebar from "./myComponents/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import InventoryManagement from "./pages/Inventory";
 import ChatBox from "./pages/ChatBox";
+import DeliveryTracking from "./pages/DeliveryTracking";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               element={<InventoryManagement />}
             />
             <Route path="/ai-agent" element={<ChatBox />} />
+            <Route path="/tracking" element={<DeliveryTracking />} />
           </Routes>
         </div>
       </div>
