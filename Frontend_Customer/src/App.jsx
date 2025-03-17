@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import Shop from "./pages/Shop";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         {/* Contenu principal (dashboard et autres pages) */}
         <div className="flex-1 p-5  overflow-y-auto">
           <Routes>
-            <Route path="/" element={<Home/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
           </Routes>
         </div>
       </div>
