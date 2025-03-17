@@ -9,7 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, EyeOff, Trash } from "lucide-react";
+import { ExternalLink, Eye, EyeOff, Trash } from "lucide-react";
+import OrderDetail from "../myComponents/OrderDetail";
 
 const orders = [
   {
@@ -71,6 +72,7 @@ const statusColors = {
 export default function DeliveryTracking() {
   const [data, setData] = useState(orders);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -83,21 +85,34 @@ export default function DeliveryTracking() {
     setData(data.filter((order) => order.id !== id));
   };
 
+  const handleToggleOrderDetail = (order) => {
+    setSelectedOrder(selectedOrder?.id === order.id ? null : order);
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-4xl font-bold mb-6">Delivery Tracking</h1>
 
-      {/* Filter Buttons */}
-      <div className="flex space-x-2 mb-4">
-        {["All", "1 Month", "3 Months", "1 Year"].map((filter) => (
-          <Button key={filter} variant="outline">
-            {filter}
-          </Button>
-        ))}
-      </div>
+      {/* Selected Order Detail - Always on Top */}
+      {selectedOrder && (
+        <div className="fixed inset-0 bg-white bg-opacity-80 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-2xl relative">
+            <button
+              onClick={() => setSelectedOrder(null)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              ✖
+            </button>
+            <OrderDetail
+              order={selectedOrder}
+              onClose={() => setSelectedOrder(null)}
+            />
+          </div>
+        </div>
+      )}
 
-      {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+      {/* Table - Scrollable */}
+      <div className="overflow-y-auto max-h-[400px] bg-white rounded-lg shadow-md">
         <Table>
           <TableHeader className="bg-gray-100">
             <TableRow>
@@ -127,8 +142,16 @@ export default function DeliveryTracking() {
                   <Button variant="ghost" size="icon">
                     <ExternalLink size={16} />
                   </Button>
-                  <Button variant="ghost" size="icon">
-                    <EyeOff size={16} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleToggleOrderDetail(order)}
+                  >
+                    {selectedOrder?.id === order.id ? (
+                      <Eye size={16} />
+                    ) : (
+                      <EyeOff size={16} />
+                    )}
                   </Button>
                   <Button
                     variant="ghost"

@@ -59,10 +59,10 @@ const InventoryManagement = () => {
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold mb-4">Inventory Management</h1>
         <Button
-          className="mb-4 flex items-center gap-2"
+          className="mb-4 flex items-center "
           onClick={() => setIsModalOpen(true)}
         >
-          + New Item
+          New Item
         </Button>
       </div>
       <InventoryTable

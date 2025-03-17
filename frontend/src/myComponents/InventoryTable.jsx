@@ -6,57 +6,57 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import TableActions from "./TableAction";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash } from "lucide-react";
 
 const InventoryTable = ({ items, onEdit, onDelete }) => {
   return (
-    <div className="overflow-x-auto">
-      <Table className="w-full border-collapse border border-gray-300">
-        <TableHeader className="bg-gray-100 text-left">
-          <TableRow>
-            <TableHead className="font-bold text-lg border border-gray-300">
-              ID
-            </TableHead>
-            <TableHead className="font-bold text-lg border border-gray-300">
-              Item
-            </TableHead>
-            <TableHead className="font-bold text-lg border border-gray-300">
-              Qnt
-            </TableHead>
-            <TableHead className="font-bold text-lg border border-gray-300">
-              Price / Unit
-            </TableHead>
-            <TableHead className="font-bold text-lg border border-gray-300">
-              Actions
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="text-lg">
-          {items.map((item) => (
-            <TableRow key={item.id} className="text-left">
-              <TableCell className="border border-gray-300">
-                {item.productID}
-              </TableCell>
-              <TableCell className="border border-gray-300">
-                {item.prodcutName}
-              </TableCell>
-              <TableCell className="border border-gray-300">
-                {item.quantity}
-              </TableCell>
-              <TableCell className="border border-gray-300">
-                {item.price} $
-              </TableCell>
-              <TableCell className="border border-gray-300">
-                <TableActions
-                  item={item}
-                  onEdit={() => onEdit(item.productID)}
-                  onDelete={() => onDelete(item.productID)}
-                />
-              </TableCell>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Inventory Management</h1>
+
+      <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+        <Table>
+          <TableHeader className="bg-gray-100">
+            <TableRow>
+              <TableHead className="font-semibold text-base">ID</TableHead>
+              <TableHead className="font-semibold text-base">Item</TableHead>
+              <TableHead className="font-semibold text-base">
+                Quantity
+              </TableHead>
+              <TableHead className="font-semibold text-base">
+                Price / Unit
+              </TableHead>
+              <TableHead className="font-semibold text-base">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item.productID}>
+                <TableCell>{item.productID}</TableCell>
+                <TableCell>{item.prodcutName}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.price} $</TableCell>
+                <TableCell className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => onEdit(item.productID)}
+                  >
+                    <Pencil size={16} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => onDelete(item.productID)}
+                  >
+                    <Trash size={16} />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
