@@ -8,17 +8,20 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 function Header() {
   const PrincipleLinks = [
     {
       id: 1,
       name: "Home",
+      link: "/",
     },
     {
       id: 2,
       name: "Shop",
+      link: "/Shop",
     },
-    { id: 3, name: "Support" },
+    { id: 3, name: "Support", link: "Support" },
   ];
   const DropdownLinks = [
     {
@@ -53,11 +56,12 @@ function Header() {
       </div>
       <div className="w-[15%] ">
         <ul className="flex justify-between items-center">
-          {/* <li>Home</li>
-          <li>Shop</li>
-          <li>Support</li> */}
           {PrincipleLinks.map((data) => (
-            <li key={data.id} className="cursor-pointer">{data.name}</li>
+            <Link to={data.link} key={data.id}>
+              <li key={data.id} className="cursor-pointer">
+                {data.name}
+              </li>
+            </Link>
           ))}
         </ul>
       </div>
