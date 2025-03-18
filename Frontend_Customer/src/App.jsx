@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Product_Details from "./components/ProduciDetails";
 import Product from "./pages/Product";
+import Support from "./pages/Support";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/shop" element={<Shop />} />
             <Route path="/product" element={<Product_Details />} />
+            <Route path="/support" element={<Support />} />
+            
           </Routes>
         </div>
       </div>

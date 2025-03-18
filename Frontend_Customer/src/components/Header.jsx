@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../assets/Logo.svg";
 import {
   UserRound,
@@ -9,7 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-function Header() {
+function Header({isModalOpen, setIsModalOpen }) {
   const PrincipleLinks = [
     {
       id: 1,
@@ -66,7 +66,10 @@ function Header() {
         </ul>
       </div>
       <div className="w-[19%] flex justify-between  p-2">
-        <div className="flex justify-center items-center space-x-2 w-[50%] cursor-pointer">
+        <div
+          className="flex justify-center items-center space-x-2 w-[50%] cursor-pointer"
+          onClick={setIsModalOpen(true)}
+        >
           <ShoppingCart />
           <p>
             Card <span>0</span>

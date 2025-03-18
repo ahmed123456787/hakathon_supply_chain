@@ -6,7 +6,11 @@ import Payment_Logo from "../assets/secure-payment-fill.svg";
 import Traffic_Logo from "../assets/truck-fill.svg";
 import Deals_Logo from "../assets/discount-percent-fill.svg";
 import Footer from "../components/Footer";
-function Home() {
+import MyCart from "../components/MyCart";
+import { useState } from "react";
+function Home({isModalOpen, setIsModalOpen}) {
+  
+
   const Property_data = [
     {
       id: 1,
@@ -83,6 +87,7 @@ function Home() {
       </div>
       {/* Footer */}
       <Footer />
+      {isModalOpen && <MyCart onclose={()=>{setIsModalOpen(false)}} />}
     </div>
   );
 }
