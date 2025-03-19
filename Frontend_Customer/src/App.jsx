@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
-import Product_Details from "./components/ProduciDetails";
+import Product_Details from "./components/ProductDetails";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Shop from "./pages/Shop";
@@ -22,7 +22,7 @@ function App() {
             <Route path="/product-detail" element={<Product />} />
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/product" element={<Product_Details />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="/support" element={<Support />} />
           </Routes>
         </div>
