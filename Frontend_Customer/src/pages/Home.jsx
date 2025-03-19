@@ -7,6 +7,7 @@ import youngMen from "../assets/young-man.svg";
 import ProductCard from "../components/Cards";
 import Footer from "../components/Footer";
 import MyCart from "../components/MyCart";
+<<<<<<< HEAD
 import Property from "../components/Property";
 
 function Home({ isModalOpen, setIsModalOpen }) {
@@ -26,6 +27,18 @@ function Home({ isModalOpen, setIsModalOpen }) {
     fetchProducts();
   }, []);
 
+=======
+import { useState } from "react";
+function Home({isModalOpen, setIsModalOpen  ,addToCart}) {
+  
+  const product = {
+    name: "Red Hat",
+    href: "#",
+    image: "https://bundui-images.netlify.app/products/04.jpeg",
+    price: 28,
+    category: "Clothing"
+  };
+>>>>>>> 614d5397b266dec6f78f4b01a8afc3aac9445fe0
   const Property_data = [
     {
       id: 1,
@@ -62,6 +75,7 @@ function Home({ isModalOpen, setIsModalOpen }) {
           <img src={youngMen} alt="" className="object-contain w-[650px]" />
         </div>
       </div>
+<<<<<<< HEAD
       <div className="flex-col">
         <div className="flex align-items justify-start">
           <h1 className="font-bold text-4xl p-4">🔥Featured Product</h1>
@@ -85,6 +99,25 @@ function Home({ isModalOpen, setIsModalOpen }) {
                 <ProductCard product={product} />
               </div>
             ))}
+=======
+      <div className=" flex justify-start items-center mt-5">
+        <h1 className=" font-bold text-4xl p-4">🔥Feautured Product</h1>
+      </div>
+      <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="w-[300px]">
+            <ProductCard product={product} addToCart={()=>addToCart(product)} />
+          </div>
+        ))}
+      </div>
+      <div className=" flex justify-start items-center mt-5">
+        <h1 className=" font-bold text-4xl p-4">🔥New Product</h1>
+      </div>
+      <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="w-[300px]">
+            <ProductCard product={product} addToCart={()=>addToCart(product)} />
+>>>>>>> 614d5397b266dec6f78f4b01a8afc3aac9445fe0
           </div>
         </div>
         <div className="px-5 mt-10 flex justify-between items-center">
