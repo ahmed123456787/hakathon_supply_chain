@@ -1,15 +1,7 @@
 import React from "react";
 import { HeartIcon, PlusIcon } from "lucide-react";
 
-const product = {
-  name: "Red Hat",
-  href: "#",
-  image: "https://bundui-images.netlify.app/products/04.jpeg",
-  price: "$28",
-  category: "Clothing"
-};
-
-export default function ProductCard() {
+export default function ProductCard({ product, addToCart }) {
   return (
     <div className="w-[300px] group relative space-y-4">
       <figure className="group-hover:opacity-90">
@@ -26,13 +18,16 @@ export default function ProductCard() {
           </h3>
           <p className="text-sm text-gray-500">{product.category}</p>
         </div>
-        <p className="text-lg font-semibold">{product.price}</p>
+        <p className="text-lg font-semibold">${product.price}</p>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 ">
         <button className="border border-gray-300 rounded-md p-2 flex-shrink-0">
           <HeartIcon className="w-4 h-4" />
         </button>
-        <button className="border border-gray-300 rounded-md p-2 flex items-center w-full">
+        <button
+          className="border border-gray-300 rounded-md p-2 flex items-center w-full cursor-pointer hover:bg-black/80 hover:text-white"
+          onClick={() => addToCart(product)}
+        >
           <PlusIcon className="w-4 h-4 mr-1 " /> Add to Cart
         </button>
       </div>

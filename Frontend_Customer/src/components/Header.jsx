@@ -9,7 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-function Header({isModalOpen, setIsModalOpen }) {
+function Header({ cartCount, onCartClick }) {
   const PrincipleLinks = [
     {
       id: 1,
@@ -34,7 +34,7 @@ function Header({isModalOpen, setIsModalOpen }) {
       id: 2,
       name: "Orders",
       logo: <Box />,
-      link: "/#",
+      link: "/orders",
     },
     {
       id: 3,
@@ -67,12 +67,19 @@ function Header({isModalOpen, setIsModalOpen }) {
       </div>
       <div className="w-[19%] flex justify-between  p-2">
         <div
+          onClick={onCartClick}
           className="flex justify-center items-center space-x-2 w-[50%] cursor-pointer"
-          onClick={setIsModalOpen(true)}
         >
           <ShoppingCart />
-          <p>
-            Card <span>0</span>
+          <p className="">
+            Card {"  "}
+            <span
+              className={`${
+                cartCount > 0 ? "bg-red-500 text-white rounded-lg" : "hidden"
+              } rounded-2xl p-2`}
+            >
+              {cartCount}
+            </span>
           </p>
         </div>
         <div className="w-[50%] relative group cursor-pointer">

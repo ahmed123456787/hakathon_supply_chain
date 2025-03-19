@@ -12,11 +12,18 @@ import {
 } from "@/components/ui/pagination";
 import Footer from "../components/Footer";
 
-function Shop() {
+function Shop({ addToCart }) {
   const products = [...Array(24)]; // Liste de 8 produits
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
-
+  const product = {
+    name: "Red Hat",
+    href: "#",
+    image: "https://bundui-images.netlify.app/products/04.jpeg",
+    price: 28,
+    category: "Clothing"
+  };
+ 
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const currentProducts = products.slice(
     (currentPage - 1) * itemsPerPage,
@@ -32,7 +39,7 @@ function Shop() {
       <div className="grid grid-cols-4 gap-10 mt-5">
         {currentProducts.map((_, index) => (
           <div key={index} className="w-[300px]">
-            <ProductCard />
+            <ProductCard product={product} addToCart={()=>addToCart(product)} />
           </div>
         ))}
       </div>

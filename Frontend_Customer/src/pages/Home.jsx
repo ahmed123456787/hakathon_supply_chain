@@ -8,9 +8,15 @@ import Deals_Logo from "../assets/discount-percent-fill.svg";
 import Footer from "../components/Footer";
 import MyCart from "../components/MyCart";
 import { useState } from "react";
-function Home({isModalOpen, setIsModalOpen}) {
+function Home({isModalOpen, setIsModalOpen  ,addToCart}) {
   
-
+  const product = {
+    name: "Red Hat",
+    href: "#",
+    image: "https://bundui-images.netlify.app/products/04.jpeg",
+    price: 28,
+    category: "Clothing"
+  };
   const Property_data = [
     {
       id: 1,
@@ -66,7 +72,7 @@ function Home({isModalOpen, setIsModalOpen}) {
       <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
         {[...Array(4)].map((_, index) => (
           <div key={index} className="w-[300px]">
-            <ProductCard />
+            <ProductCard product={product} addToCart={()=>addToCart(product)} />
           </div>
         ))}
       </div>
@@ -76,7 +82,7 @@ function Home({isModalOpen, setIsModalOpen}) {
       <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
         {[...Array(4)].map((_, index) => (
           <div key={index} className="w-[300px]">
-            <ProductCard />
+            <ProductCard product={product} addToCart={()=>addToCart(product)} />
           </div>
         ))}
       </div>

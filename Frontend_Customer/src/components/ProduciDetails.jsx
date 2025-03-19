@@ -8,7 +8,6 @@ function Product_Details({ title, price, rating, totalRatings,desc }) {
       <div className="p-5  flex flex-col w-[50%] space-y-2">
         {/* Product Title */}
         <h2 className="text-lg font-semibold">{title}</h2>
-
         {/* Star Rating */}
         <StarRating rating={rating} totalRatings={totalRatings} />
         {/* Price */}

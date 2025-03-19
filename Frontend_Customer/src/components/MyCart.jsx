@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import ProductItem from "./ProductItem";
 import { X } from "lucide-react";
-function MyCart({onclose}) {
-  const cartItems = [
-    { name: "Product Name", quantity: 1, price: "$140.0" },
-    { name: "Product Name", quantity: 1, price: "$140.0" },
-    { name: "Product Name", quantity: 1, price: "$140.0" },
-  ];
+function MyCart({ initialCartItems, onClose }) {
+  const [cartItems, setCartItems] = useState(
+    (initialCartItems || []).map((item) => ({
+      ...item,
+      quantity: 1, // Initialiser la quantité à 1 si elle n'existe pas
+    }))
+  );
+
+  // Fonction pour modifier la quantité d'un article
+  const updateQuantity = (index, change) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              quantity: Math.max(1, item.quantity + change),
+              price: item.price * Math.max(1, item.quantity + change), // Recalcul du prix
+            }
+          : item
+      )
+    );
+  };
+
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price, 0);
+  const tax = subtotal * 0.05;
+  const total = subtotal + tax;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -14,7 +34,7 @@ function MyCart({onclose}) {
         {/* Header */}
         <div className="flex justify-between">
           <h1 className="text-lg font-bold">My Cart</h1>
-          <X onClick={onclose}/>
+          <X onClick={onClose} className="cursor-pointer" />
         </div>
 
         {/* Customer Information */}
@@ -30,7 +50,12 @@ function MyCart({onclose}) {
         <h2 className="text-lg font-semibold mb-0.5">Items</h2>
         <div className="space-y-1">
           {cartItems.map((item, index) => (
-            <ProductItem key={index} {...item} />
+            <ProductItem
+              key={index}
+              item={item}
+              onIncrease={() => updateQuantity(index, 1)}
+              onDecrease={() => updateQuantity(index, -1)}
+            />
           ))}
         </div>
 
@@ -40,15 +65,15 @@ function MyCart({onclose}) {
           <div className="space-y-0.5">
             <div className="flex justify-between">
               <span className="text-gray-500">Subtotal</span>
-              <span className="font-semibold">$280.0</span>
+              <span className="font-semibold">${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Tax</span>
-              <span className="font-semibold">$10.0</span>
+              <span className="font-semibold">${tax.toFixed(2)}</span>
             </div>
             <div className="flex justify-between border-t pt-1">
               <span className="font-semibold">Total</span>
-              <span className="font-semibold">$290.0</span>
+              <span className="font-semibold">${total.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -65,7 +90,10 @@ function MyCart({onclose}) {
 
         {/* Actions */}
         <div className="mt-4 flex justify-between">
-          <button className="px-3 py-1 bg-gray-200 text-gray-700 rounded-lg">
+          <button
+            className="px-3 py-1 bg-gray-200 text-gray-700 rounded-lg"
+            onClick={() => setCartItems([])}
+          >
             Clear
           </button>
           <button className="px-3 py-1 bg-black text-white rounded-lg">
