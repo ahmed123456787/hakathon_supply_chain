@@ -1,16 +1,13 @@
 import React from "react";
-import youngMen from "../assets/young-man.svg";
-import ProductCard from "../components/Cards";
-import Property from "../components/Property";
+import Deals_Logo from "../assets/discount-percent-fill.svg";
 import Payment_Logo from "../assets/secure-payment-fill.svg";
 import Traffic_Logo from "../assets/truck-fill.svg";
-import Deals_Logo from "../assets/discount-percent-fill.svg";
+import youngMen from "../assets/young-man.svg";
+import ProductCard from "../components/Cards";
 import Footer from "../components/Footer";
 import MyCart from "../components/MyCart";
-import { useState } from "react";
-function Home({isModalOpen, setIsModalOpen}) {
-  
-
+import Property from "../components/Property";
+function Home({ isModalOpen, setIsModalOpen }) {
   const Property_data = [
     {
       id: 1,
@@ -60,34 +57,46 @@ function Home({isModalOpen, setIsModalOpen}) {
           <img src={youngMen} alt="" className="object-contain w-[650px]" />
         </div>
       </div>
-      <div className=" flex justify-start items-center mt-5">
-        <h1 className=" font-bold text-4xl p-4">🔥Feautured Product</h1>
-      </div>
-      <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
-        {[...Array(4)].map((_, index) => (
-          <div key={index} className="w-[300px]">
-            <ProductCard />
+      <div className="max-w[1420px]">
+        <div className=" flex justify-start items-center mt-5">
+          <h1 className=" font-bold text-4xl p-4">🔥Feautured Product</h1>
+        </div>
+        <div className="flex align-items justify-center ">
+          <div className="grid grid-cols-4 gap-[20px] max-w[1420px]">
+            {[...Array(4)].map((_, index) => (
+              <div key={index}>
+                <ProductCard />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className=" flex justify-start items-center mt-5">
-        <h1 className=" font-bold text-4xl p-4">🔥New Product</h1>
-      </div>
-      <div className="flex space-x-5  items-center mt-5 overflow-auto scrollbar-hidden px-5">
-        {[...Array(4)].map((_, index) => (
-          <div key={index} className="w-[300px]">
-            <ProductCard />
+        </div>
+        <div className=" flex justify-start items-center mt-5">
+          <h1 className=" font-bold text-4xl p-4">🔥New Product</h1>
+        </div>
+        <div className="flex align-items justify-center ">
+          <div className="grid grid-cols-4 gap-[20px] ">
+            {[...Array(4)].map((_, index) => (
+              <div key={index}>
+                <ProductCard />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="px-5 mt-10 flex justify-between items-center">
-        {Property_data.map((item) => (
-          <Property icon={item.icon} name={item.name} desc={item.desc} />
-        ))}
+        </div>
+        <div className="px-5 mt-10 flex justify-between items-center">
+          {Property_data.map((item) => (
+            <Property icon={item.icon} name={item.name} desc={item.desc} />
+          ))}
+        </div>
       </div>
       {/* Footer */}
       <Footer />
-      {isModalOpen && <MyCart onclose={()=>{setIsModalOpen(false)}} />}
+      {isModalOpen && (
+        <MyCart
+          onclose={() => {
+            setIsModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

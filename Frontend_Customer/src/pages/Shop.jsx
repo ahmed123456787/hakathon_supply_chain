@@ -4,7 +4,6 @@ import ProductCard from "../components/Cards";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -29,12 +28,14 @@ function Shop() {
         <h1 className="font-bold text-4xl">All Products</h1>
       </div>
 
-      <div className="grid grid-cols-4 gap-10 mt-5">
+      <div className="flex align-center justify-center ">
+        <div className="grid grid-cols-4 gap-[20px] max-w[1420px]">
         {currentProducts.map((_, index) => (
           <div key={index} className="w-[300px]">
             <ProductCard />
           </div>
         ))}
+          </div>
       </div>
 
       {/* Pagination */}

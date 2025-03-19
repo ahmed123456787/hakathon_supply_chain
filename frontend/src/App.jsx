@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Sidebar from "./myComponents/Sidebar";
-import Dashboard from "./pages/Dashboard";
-import InventoryManagement from "./pages/Inventory";
 import ChatBox from "./pages/ChatBox";
+import Dashboard from "./pages/Dashboard";
 import DeliveryTracking from "./pages/DeliveryTracking";
+import InventoryManagement from "./pages/Inventory";
 
 function App() {
   return (

@@ -68,7 +68,7 @@ function Header({isModalOpen, setIsModalOpen }) {
       <div className="w-[19%] flex justify-between  p-2">
         <div
           className="flex justify-center items-center space-x-2 w-[50%] cursor-pointer"
-          onClick={setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)}
         >
           <ShoppingCart />
           <p>
