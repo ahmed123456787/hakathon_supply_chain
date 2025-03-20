@@ -30,7 +30,7 @@ const menuItems = [
     path: "/deliveries",
   },
   { name: "Communication", icon: <MessageCircle size={20} />, path: "/ai-agent" },
-  { name: "Map & Route Optimization", icon: <Truck size={20} />, path: "/tracking" },
+  { name: "Map & Route Optimization", icon: <Truck size={20} />, path: "/map-route" },
   {
     name: "Settings & Profile",
     icon: <Settings size={20} />,
