@@ -71,9 +71,10 @@ export const addProduct = async (product) => {
       Weight: product.weight,
       Description: product.description || "",
       Cost: product.cost || 0,
-      Image: product.image || "",
+      Image: product.image || null,
       SupplierID: 1,
     };
+    console.log(newProduct)
     const response = await api.post(
       `/api/Product?ProdcutName=${newProduct.prodcutName}&Price=${newProduct.Price}&Quantity=${newProduct.Quantity}&Weight=${newProduct.Weight}&Description=${newProduct.Description}&Cost=${newProduct.Cost}&Image=${newProduct.Image}&SupplierID=${newProduct.SupplierID}`,
       newProduct
