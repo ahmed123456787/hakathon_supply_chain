@@ -11,12 +11,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Eye, EyeOff, Trash } from "lucide-react";
 import OrderDetail from "../components/OrderDetails";
-import { getAllOrders } from "../api/dirverApi";
+import { getAllOrders, updateOrderStatus } from "../api/dirverApi"; // Importez la fonction pour mettre à jour le statut
 
 export default function DeliveryTracking() {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(false);
+  const [orderToUpdate, setOrderToUpdate] = useState(null); // État pour la commande à modifier
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -57,6 +58,36 @@ export default function DeliveryTracking() {
     setSelectedOrder(selectedOrder?.orderID === order.orderID ? null : order);
   };
 
+  // Gestionnaire pour ouvrir le modal de modification de statut
+  const handleStatusClick = (order) => {
+    setOrderToUpdate(order);
+  };
+
+  // Gestionnaire pour mettre à jour le statut de la commande
+  const handleUpdateStatus = async (newStatus) => {
+    try {
+      // Créer une copie de l'objet orderToUpdate avec le nouveau statut
+      const updatedOrder = {
+        ...orderToUpdate, // Copie de l'objet actuel
+        orderStatus: newStatus, // Mettre à jour le statut
+      };
+      console.log(updatedOrder)
+      // Envoyer l'objet modifié au backend
+      await updateOrderStatus(updatedOrder.orderID,newStatus); // Assurez-vous que updateOrderStatus accepte l'objet complet
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderID === orderToUpdate.orderID ? updatedOrder : order
+        )
+      );
+
+      // Fermer le modal après la mise à jour
+      setOrderToUpdate(null);
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-4xl font-bold mb-6">Delivery Orders</h1>
@@ -74,6 +105,32 @@ export default function DeliveryTracking() {
               order={selectedOrder}
               onClose={() => setSelectedOrder(null)}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Modal pour modifier le statut */}
+      {orderToUpdate && (
+        <div className="fixed inset-0 bg-white bg-opacity-80 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md relative">
+            <button
+              onClick={() => setOrderToUpdate(null)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+            >
+              ✖
+            </button>
+            <h2 className="text-xl font-bold mb-4">Update Order Status</h2>
+            <div className="space-y-4">
+              <Button onClick={() => handleUpdateStatus(1)} className="w-full">
+                Mark as Delivering
+              </Button>
+              <Button onClick={() => handleUpdateStatus(2)} className="w-full">
+                Mark as Completed
+              </Button>
+              <Button onClick={() => handleUpdateStatus(3)} className="w-full">
+                Mark as Returned
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -124,7 +181,10 @@ export default function DeliveryTracking() {
                 <TableCell className="border-r border-gray-300">
                   {new Date(order.orderDate).toISOString().split("T")[0]}
                 </TableCell>
-                <TableCell className="border-r border-gray-300">
+                <TableCell
+                  className="border-r border-gray-300 cursor-pointer"
+                  onClick={() => handleStatusClick(order)}
+                >
                   <Badge
                     className={`${
                       statusColors[orderStatusMap[order.orderStatus]]
