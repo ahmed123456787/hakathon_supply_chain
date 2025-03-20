@@ -1,15 +1,15 @@
 import json
-from agent.chroma_db import VectorDB
+import pyodbc
+from chroma_db import VectorDB
 from apscheduler.schedulers.background import BackgroundScheduler
 from database_connection import create_connection
 from sqlalchemy import text
 import time
-from sqlalchemy.engine.base import Connection
 
 # Tables to sync
 TABLES = ["order", "product", "customer", "user", "supplier", "notification", "driver"]
 
-def get_last_inserted_id(conn:Connection, table_name):
+def get_last_inserted_id(conn, table_name):
     """Get the last inserted ID for a given table"""
     try:
         print(f"🔍 Fetching last inserted ID for table: {table_name}...")
@@ -42,7 +42,7 @@ def get_last_inserted_id(conn:Connection, table_name):
         return 0
 
 
-def update_last_inserted_id(conn:Connection, table_name, last_id):
+def update_last_inserted_id(conn, table_name, last_id):
     """Update the last inserted ID"""
     try:
         print(f"🔄 Updating last inserted ID for {table_name} to {last_id}...")
@@ -60,7 +60,7 @@ def update_last_inserted_id(conn:Connection, table_name, last_id):
         print(f"❌ Error updating last inserted ID for {table_name}: {e}")
 
 
-def fetch_new_data(conn:Connection, table_name, last_id):
+def fetch_new_data(conn, table_name, last_id):
     """Fetch new data with column names"""
     try:
         print(f"📥 Fetching new data from {table_name} where ID > {last_id}...")
