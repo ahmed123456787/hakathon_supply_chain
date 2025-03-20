@@ -11,8 +11,7 @@ import { getAllProducts } from "../api/productApi";
 import ProductCard from "../components/Cards";
 import Footer from "../components/Footer";
 
-<<<<<<< HEAD
-function Shop() {
+function Shop({ addToCart }) {
   const [products, setProducts] = useState([]);
 
   const itemsPerPage = 8;
@@ -30,20 +29,6 @@ function Shop() {
     })();
   }, []);
 
-=======
-function Shop({ addToCart }) {
-  const products = [...Array(24)]; // Liste de 8 produits
-  const itemsPerPage = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const product = {
-    name: "Red Hat",
-    href: "#",
-    image: "https://bundui-images.netlify.app/products/04.jpeg",
-    price: 28,
-    category: "Clothing"
-  };
- 
->>>>>>> 614d5397b266dec6f78f4b01a8afc3aac9445fe0
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const currentProducts = products.slice(
     (currentPage - 1) * itemsPerPage,
@@ -56,23 +41,14 @@ function Shop({ addToCart }) {
         <h1 className="font-bold text-5xl text-gray-800">All Products</h1>
       </div>
 
-<<<<<<< HEAD
       <div className="flex flex-wrap justify-center gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
           {currentProducts.map((product, index) => (
             <div key={index} className="w-full">
-              <ProductCard product={product} />
+              <ProductCard product={product} addToCart={()=>addToCart(product)}/>
             </div>
           ))}
         </div>
-=======
-      <div className="grid grid-cols-4 gap-10 mt-5">
-        {currentProducts.map((_, index) => (
-          <div key={index} className="w-[300px]">
-            <ProductCard product={product} addToCart={()=>addToCart(product)} />
-          </div>
-        ))}
->>>>>>> 614d5397b266dec6f78f4b01a8afc3aac9445fe0
       </div>
 
       <div className="mt-10 flex justify-center">

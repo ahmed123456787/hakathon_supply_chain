@@ -69,10 +69,6 @@ function Header({ cartCount, onCartClick }) {
         <div
           onClick={onCartClick}
           className="flex justify-center items-center space-x-2 w-[50%] cursor-pointer"
-<<<<<<< HEAD
-          onClick={() => setIsModalOpen(true)}
-=======
->>>>>>> 614d5397b266dec6f78f4b01a8afc3aac9445fe0
         >
           <ShoppingCart />
           <p className="">
