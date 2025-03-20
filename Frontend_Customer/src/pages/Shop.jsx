@@ -45,7 +45,10 @@ function Shop({ addToCart }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
           {currentProducts.map((product, index) => (
             <div key={index} className="w-full">
-              <ProductCard product={product} addToCart={()=>addToCart(product)}/>
+              <ProductCard
+                product={product}
+                addToCart={() => addToCart(product)}
+              />
             </div>
           ))}
         </div>
