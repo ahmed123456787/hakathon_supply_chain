@@ -12,8 +12,11 @@ import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
 import { getRevenues } from "../api/productApi";
 import CardStat from "../myComponents/CardStat";
+<<<<<<< HEAD
 import { Bell } from "lucide-react";
 import Notification from "../myComponents/Notification";
+=======
+>>>>>>> 78bdf208b0c299e4fb92017f2e8054dd96561c1d
 
 const DashboardPage = () => {
   const [revenue, setReveunue] = useState({

@@ -1,5 +1,9 @@
 import api from "./init";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 78bdf208b0c299e4fb92017f2e8054dd96561c1d
 export const getAllProducts = async () => {
   try {
     const response = await api.get("/api/Product/GetAllProductsForSupplier/1");
@@ -9,6 +13,7 @@ export const getAllProducts = async () => {
     throw error;
   }
 };
+<<<<<<< HEAD
 export const getMonthsOverview = async () => {
   try {
     const response = await api.get("/api/Order/GetProductsForAllMonthsAsync");
@@ -84,3 +89,6 @@ export const addProduct = async (product) => {
     throw error;
   }
 };
+=======
+
+>>>>>>> 78bdf208b0c299e4fb92017f2e8054dd96561c1d
