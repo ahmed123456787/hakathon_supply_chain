@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from agent import abot
 from supply_risk_agent import generate_alerts
-
+from stock_risk_model import main as stock_risk_model
 origins = [
     "http://localhost:5173",
     "http://localhost:5174",
@@ -36,6 +36,12 @@ async def chat(request: ChatRequest):
 @app.get("/notification-system")
 async def notification_system():
     return {"response": generate_alerts()}
+
+@app.get("/stock-risk")
+async def stock_risk():
+    res = stock_risk_model()
+    print("rest",res)
+    return res
 
 if __name__ == "__main__":
     import uvicorn

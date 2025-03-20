@@ -10,10 +10,11 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
-import { getRevenues } from "../api/productApi";
+import { getRevenues, getStockRisk } from "../api/productApi";
 import CardStat from "../myComponents/CardStat";
 import { Bell } from "lucide-react";
 import Notification from "../myComponents/Notification";
+import Histogram from "../myComponents/Histogram"; // Import Histogram component
 
 const DashboardPage = () => {
   const [revenue, setReveunue] = useState({
@@ -25,6 +26,7 @@ const DashboardPage = () => {
     todaySalesPercentage: 0,
   });
 
+  const [stockRiskData, setStockRiskData] = useState([]); // State for stock risk data
   const [isNotificationVisible, setNotificationVisible] = useState(false);
 
   const toggleNotification = () => {
@@ -50,7 +52,20 @@ const DashboardPage = () => {
       }
     };
 
+    const fetchStockRisk = async () => {
+      try {
+        const stockRisk = await getStockRisk(); // Fetch stock risk data
+        setStockRiskData([
+          { name: "High Risk", count: stockRisk.high_risk_count },
+          { name: "Low Risk", count: stockRisk.low_risk_count },
+        ]);
+      } catch (error) {
+        console.error("Error fetching stock risk:", error);
+      }
+    };
+
     fetchSales();
+    fetchStockRisk();
   }, []);
 
   // Move `data` inside the component so it gets updated dynamically
@@ -137,6 +152,8 @@ const DashboardPage = () => {
                 </CardHeader>
                 <CardContent className="pl-2">
                   <Overview />
+                  <Histogram data={stockRiskData} />{" "}
+                  {/* Add Histogram component */}
                 </CardContent>
               </Card>
               <Card className="col-span-3">

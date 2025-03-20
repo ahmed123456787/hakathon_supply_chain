@@ -27,12 +27,19 @@ export default function MapWithRoute() {
   const [stops, setStops] = useState([]); // Stocke tous les arrêts de toutes les routes
 
   useEffect(() => {
+<<<<<<< HEAD
+    fetch("/dataexample.json")
+      .then((response) => JSON.parse(response) /* 🚨 Erreur ici */)
+      .then((data) => {
+        console.log("Données brutes :", data); // 🛠️ Debug
+=======
     // Définir une fonction asynchrone pour récupérer les données
     const fetchData = async () => {
       try {
         // Appel à l'API getOptimalRoutes
         const data = await getOptimalRoutes();
         console.log("API response:", data);
+>>>>>>> a129bff5f140a6d6936dc751046f3cb792ec6159
 
         if (!data.routesResponse) {
           console.error("Error: `routesResponse` is missing");
