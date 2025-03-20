@@ -84,3 +84,13 @@ export const addProduct = async (product) => {
     throw error;
   }
 };
+
+export const getStockRisk = async () => {
+  try {
+    const response = await api.get("http://localhost:8000/stock-risk");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stock risk:", error);
+    throw error;
+  }
+};
