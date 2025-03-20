@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import Logo from "../assets/Logo.svg";
 import {
-  UserRound,
-  ShoppingCart,
-  CircleUser,
   Box,
-  Settings,
+  CircleUser,
   LogOut,
+  Settings,
+  ShoppingCart,
+  UserRound,
 } from "lucide-react";
+import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "../assets/Logo.svg";
 function Header({ cartCount, onCartClick }) {
   const PrincipleLinks = [
     {
@@ -72,7 +72,7 @@ function Header({ cartCount, onCartClick }) {
         >
           <ShoppingCart />
           <p className="">
-            Card {"  "}
+            Cart {"  "}
             <span
               className={`${
                 cartCount > 0 ? "bg-red-500 text-white rounded-lg" : "hidden"

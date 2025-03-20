@@ -7,10 +7,10 @@ export default function ProductCard({ product, addToCart }) {
     <div className="w-[300px] group relative space-y-4 p-4 border rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
       <figure className="relative overflow-hidden rounded-lg">
         <img
-          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-64 object-center transition-transform duration-300 group-hover:scale-105"
           src={
             product.image ||
-            "https://bundui-images.netlify.app/products/04.jpeg"
+            "https://placehold.co/600?text=No+image"
           }
           alt={product.prodcutName || "Product Image"}
         />
