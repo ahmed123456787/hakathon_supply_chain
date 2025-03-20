@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import ChatBox from "./pages/ChatBox";
 import DeliveryTracking from "./pages/Deliveries";
 import MapWithOrder from "./pages/Map";
+import DashboardPage from "./pages/Dashboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         {/* Contenu principal (dashboard et autres pages) */}
         <div className="flex-1 p-5  overflow-y-auto">
           <Routes>
+            <Route path="/" element={<DashboardPage />} />
             <Route path="/ai-agent" element={<ChatBox />} />
             <Route path="/deliveries" element={<DeliveryTracking />} />
             <Route path="/map-route" element={<MapWithOrder />} />

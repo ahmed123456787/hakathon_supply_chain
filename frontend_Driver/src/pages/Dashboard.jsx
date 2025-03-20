@@ -8,12 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Overview } from "@/components/overview";
-import { RecentSales } from "@/components/recent-sales";
 import { getRevenues } from "../api/productApi";
-import CardStat from "../myComponents/CardStat";
+import CardStat from "../components/CardStat";
 import { Bell } from "lucide-react";
-import Notification from "../myComponents/Notification";
 
 const DashboardPage = () => {
   const [revenue, setReveunue] = useState({
@@ -94,25 +91,17 @@ const DashboardPage = () => {
   return (
     <div className="hidden flex-col md:flex bg-gray-100">
       <div>
-        <div className="flex flex-col justify-start space-y-3 py-4 px-6">
+        <div className="flex flex-col justify-center space-y-3 py-4 px-">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="font-bold text-4xl">Welcome Ahmed</h1>
               <h5 className="font-bold text-gray-500">Dashboard</h5>
             </div>
-            <Bell
-              className="flex justify-end cursor-pointer"
-              onClick={toggleNotification}
-            />
-            <Notification
-              isVisible={isNotificationVisible}
-              onClose={() => setNotificationVisible(false)}
-            />
           </div>
         </div>
         <div className="bg-slate-300 rounded-lg px-5 flex justify-around items-center">
           <div className="flex flex-col justify-center items-start space-y-7">
-            <h1 className="text-4xl font-bold">AI product recommendation.</h1>
+            <h1 className="text-4xl font-bold">Driver tracking.</h1>
             <button className="bg-slate-900 rounded-md text-white h-15 w-25 p-2 font-bold">
               Let's Go
             </button>
@@ -129,27 +118,6 @@ const DashboardPage = () => {
               {data.map((stat, index) => (
                 <CardStat key={index} stat={stat} />
               ))}
-            </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="pl-2">
-                  <Overview />
-                </CardContent>
-              </Card>
-              <Card className="col-span-3">
-                <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
-                  <CardDescription>
-                    You made 265 sales this month.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <RecentSales />
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
         </Tabs>
