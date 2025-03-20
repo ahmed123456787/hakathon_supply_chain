@@ -16,34 +16,40 @@ const containerStyle = {
   height: "500px",
 };
 
-// Clé API Google Maps (⚠️ Remplace par la tienne)
-const GOOGLE_MAPS_API_KEY = "TON_API_KEY_ICI";
+const GOOGLE_MAPS_API_KEY = "AIzaSyB35ZEH3D547OyXd0OPTC_b9kkdArspmgU"; // Remplace par ta clé API
 
 export default function MapWithRoute() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
-  // État pour stocker les arrêts et la route
+  // États pour stocker les arrêts et la route
   const [stops, setStops] = useState([]);
   const [routePath, setRoutePath] = useState([]);
 
-  // Charger les données du fichier JSON
   useEffect(() => {
-    fetch("/dataexample.json") // Met le fichier dans "public/"
+    fetch("/dataexample.json")
       .then((response) => response.json())
       .then((data) => {
-        const extractedStops = data.routes[0].stops.map((stop) => ({
-          lat: stop.latitude,
-          lng: stop.longitude,
-          address: stop.address,
-        }));
+        console.log("Données brutes :", data); // 🛠️ Debug
 
-        // Récupération de la polyline encodée et décodage
-        const polylinePath = decodePolyline(data.routes[0].routePolyline);
+        if (!data.routesResponse) {
+          console.error("Erreur: `routesResponse` est manquant");
+          return;
+        }
 
-        setStops(extractedStops);
-        setRoutePath(polylinePath);
+        // ✅ Correction : Parser la chaîne en objet JSON
+        const parsedRoutes = JSON.parse(data.routesResponse);
+
+        console.log("Données après parsing :", parsedRoutes);
+
+        if (!parsedRoutes.routes || parsedRoutes.routes.length === 0) {
+          console.error("Aucune route trouvée dans le JSON");
+          return;
+        }
+
+        // Maintenant, tu peux utiliser parsedRoutes.routes normalement
+        console.log("Routes extraites :", parsedRoutes.routes);
       })
       .catch((error) =>
         console.error("Erreur lors du chargement des données :", error)
@@ -89,7 +95,7 @@ export default function MapWithRoute() {
     return points;
   }
 
-  // Centrage de la carte sur le premier arrêt
+  // Centrage de la carte sur le premier arrêt ou position par défaut
   const center = stops.length > 0 ? stops[0] : { lat: 36.7528, lng: 3.0422 };
 
   return (
@@ -105,7 +111,7 @@ export default function MapWithRoute() {
           {/* Tracé de l'itinéraire */}
           <Polyline
             path={routePath}
-            options={{ strokeColor: "#FF0000", strokeWeight: 4 }}
+            options={{ strokeColor: "#FF0000", strokeWeight: 3 }}
           />
         </GoogleMap>
       ) : (
@@ -120,7 +126,7 @@ export default function MapWithRoute() {
             <div className="flex-1">
               <h2 className="font-bold text-lg">Nearest Order</h2>
               <p className="text-sm text-gray-600">{stops[0].address}</p>
-              <Badge>Distance : 300 m</Badge>
+              <Badge>Distance : {stops[0].distance} m</Badge>
             </div>
           </CardContent>
         </Card>
