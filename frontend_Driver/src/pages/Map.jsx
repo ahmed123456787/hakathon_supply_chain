@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import packageIcon from "../assets/package-icon.jpg";
-import { getOptimalRoutes } from "../api/dirverApi";
+import { getOptimalRoutes } from "../api/dirverApi"; // Importez votre fonction API
 
 const containerStyle = {
   width: "100%",
@@ -23,8 +23,8 @@ export default function MapWithRoute() {
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
-  const [stops, setStops] = useState([]);
-  const [routePath, setRoutePath] = useState([]);
+  const [routes, setRoutes] = useState([]); // Stocke toutes les routes
+  const [stops, setStops] = useState([]); // Stocke tous les arrêts de toutes les routes
 
   useEffect(() => {
     // Définir une fonction asynchrone pour récupérer les données
@@ -49,23 +49,31 @@ export default function MapWithRoute() {
           return;
         }
 
-        // Extract the first route (or iterate through all routes if needed)
-        const route = parsedRoutes.routes[0];
+        // Extraire les informations pour toutes les routes
+        const allRoutes = parsedRoutes.routes.map((route) => {
+          // Extraire les arrêts pour cette route
+          const stops = route.stops.map((stop) => ({
+            lat: stop.latitude,
+            lng: stop.longitude,
+            address: stop.address,
+            distance: stop.distance,
+          }));
 
-        // Extract stops
-        const stops = route.stops.map((stop) => ({
-          lat: stop.latitude,
-          lng: stop.longitude,
-          address: stop.address,
-          distance: stop.distance,
-        }));
+          // Décoder la polyline pour cette route
+          const polyline = decodePolyline(route.routePolyline);
 
-        // Decode the polyline
-        const polyline = decodePolyline(route.routePolyline);
+          return {
+            stops,
+            polyline,
+          };
+        });
 
-        // Update state
-        setStops(stops);
-        setRoutePath(polyline);
+        // Mettre à jour l'état avec toutes les routes
+        setRoutes(allRoutes);
+
+        // Extraire tous les arrêts de toutes les routes pour les marqueurs
+        const allStops = allRoutes.flatMap((route) => route.stops);
+        setStops(allStops);
       } catch (error) {
         console.error("Error fetching data from API:", error);
       }
@@ -119,14 +127,19 @@ export default function MapWithRoute() {
     <div className="relative">
       {isLoaded ? (
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={14}>
+          {/* Afficher les marqueurs pour tous les arrêts */}
           {stops.map((stop, index) => (
             <Marker key={index} position={stop} label={`${index + 1}`} />
           ))}
 
-          <Polyline
-            path={routePath}
-            options={{ strokeColor: "#FF0000", strokeWeight: 3 }}
-          />
+          {/* Afficher les polylines pour toutes les routes */}
+          {routes.map((route, index) => (
+            <Polyline
+              key={index}
+              path={route.polyline}
+              options={{ strokeColor: "#FF0000", strokeWeight: 3 }}
+            />
+          ))}
         </GoogleMap>
       ) : (
         <Skeleton className="w-full h-[500px]" />
