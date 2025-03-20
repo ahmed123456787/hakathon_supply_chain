@@ -34,7 +34,7 @@ const NewItemForm = ({
       setFormData({ ...formData, primaryImage: file });
     }
   };
-  console.log(editingItem)
+  console.log(editingItem);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
