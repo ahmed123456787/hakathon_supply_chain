@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-import os 
 from typing import TypedDict, Annotated
 from langchain_core.messages import AnyMessage
 import operator
@@ -8,6 +7,7 @@ from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, Too
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.tools import tool
 from chroma_db import VectorDB
+from llm import LLM
 
 load_dotenv()   
 
@@ -63,16 +63,8 @@ class Agent:
         print("Back to the model!")
         return {'messages': results}
 
-
-model = ChatGoogleGenerativeAI(
-    api_key=os.getenv("GEMINI_API_KEY"),
-    model="gemini-1.5-pro",
-    temperature=0,
-    max_tokens=None,
-    timeout=None,
-    max_retries=2,
-    
-)
+# Initialize the Ai Model
+model = LLM().model
 
 
 
@@ -114,7 +106,7 @@ prompt = """You are a profit optimization assistant. Analyze the user's query ca
 - If the user asks specifically about positive reviews, use `search_positive_reviews()`.
 - If unsure, ask the user for clarification.
 
-Format the response like a message for a chat application."""
+Format the response like a message for a chat application dont include the ID of the data in the response."""
 
 
 

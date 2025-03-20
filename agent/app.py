@@ -6,6 +6,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from agent import abot
+from supply_risk_agent import generate_alerts
 
 origins = [
     "http://localhost:5173",
@@ -31,6 +32,10 @@ async def chat(request: ChatRequest):
     messages = [HumanMessage(content=request.message)]  
     result = abot.graph.invoke({"messages": messages})  
     return {"response": result['messages'][-1].content}
+
+@app.get("/notification-system")
+async def notification_system():
+    return {"response": generate_alerts()}
 
 if __name__ == "__main__":
     import uvicorn

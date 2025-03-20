@@ -9,8 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import packageIcon from "../assets/package-icon.jpg";
+import { getOptimalRoutes } from "../api/dirverApi";
 
-// Définition des styles de la carte
 const containerStyle = {
   width: "100%",
   height: "500px",
@@ -23,40 +23,58 @@ export default function MapWithRoute() {
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
-  // États pour stocker les arrêts et la route
   const [stops, setStops] = useState([]);
   const [routePath, setRoutePath] = useState([]);
 
   useEffect(() => {
-    fetch("/dataexample.json")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Données brutes :", data); // 🛠️ Debug
+    // Définir une fonction asynchrone pour récupérer les données
+    const fetchData = async () => {
+      try {
+        // Appel à l'API getOptimalRoutes
+        const data = await getOptimalRoutes();
+        console.log("API response:", data);
 
         if (!data.routesResponse) {
-          console.error("Erreur: `routesResponse` est manquant");
+          console.error("Error: `routesResponse` is missing");
           return;
         }
 
-        // ✅ Correction : Parser la chaîne en objet JSON
+        // Parse the routesResponse (si nécessaire)
         const parsedRoutes = JSON.parse(data.routesResponse);
 
-        console.log("Données après parsing :", parsedRoutes);
+        console.log("Parsed routes:", parsedRoutes);
 
         if (!parsedRoutes.routes || parsedRoutes.routes.length === 0) {
-          console.error("Aucune route trouvée dans le JSON");
+          console.error("No routes found in the JSON");
           return;
         }
 
-        // Maintenant, tu peux utiliser parsedRoutes.routes normalement
-        console.log("Routes extraites :", parsedRoutes.routes);
-      })
-      .catch((error) =>
-        console.error("Erreur lors du chargement des données :", error)
-      );
+        // Extract the first route (or iterate through all routes if needed)
+        const route = parsedRoutes.routes[0];
+
+        // Extract stops
+        const stops = route.stops.map((stop) => ({
+          lat: stop.latitude,
+          lng: stop.longitude,
+          address: stop.address,
+          distance: stop.distance,
+        }));
+
+        // Decode the polyline
+        const polyline = decodePolyline(route.routePolyline);
+
+        // Update state
+        setStops(stops);
+        setRoutePath(polyline);
+      } catch (error) {
+        console.error("Error fetching data from API:", error);
+      }
+    };
+
+    // Appeler la fonction asynchrone
+    fetchData();
   }, []);
 
-  // Décode une polyline Google Maps
   function decodePolyline(encoded) {
     let points = [];
     let index = 0,
@@ -95,20 +113,16 @@ export default function MapWithRoute() {
     return points;
   }
 
-  // Centrage de la carte sur le premier arrêt ou position par défaut
   const center = stops.length > 0 ? stops[0] : { lat: 36.7528, lng: 3.0422 };
 
   return (
     <div className="relative">
-      {/* Affichage de la carte */}
       {isLoaded ? (
         <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={14}>
-          {/* Marqueurs des arrêts */}
           {stops.map((stop, index) => (
             <Marker key={index} position={stop} label={`${index + 1}`} />
           ))}
 
-          {/* Tracé de l'itinéraire */}
           <Polyline
             path={routePath}
             options={{ strokeColor: "#FF0000", strokeWeight: 3 }}
@@ -118,7 +132,6 @@ export default function MapWithRoute() {
         <Skeleton className="w-full h-[500px]" />
       )}
 
-      {/* Carte d'information sur la commande */}
       {stops.length > 0 && (
         <Card className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-md bg-white shadow-lg rounded-lg p-4">
           <CardContent className="flex items-center space-x-4">
