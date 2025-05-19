@@ -117,11 +117,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👥 Team
-
-- Ahmed - Full Stack Developer
-- SALAM HACK Team
-
-## 📞 Contact
-
-For any queries regarding the project, please reach out to us at team@salamhack.com
