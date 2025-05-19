@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
-import { getRevenues, getStockRisk } from "../api/productApi";
+import { getRevenues } from "../api/productApi";
 import CardStat from "../myComponents/CardStat";
 import { Bell } from "lucide-react";
 import Notification from "../myComponents/Notification";
@@ -26,12 +26,18 @@ const DashboardPage = () => {
     todaySalesPercentage: 0,
   });
 
-  const [stockRiskData, setStockRiskData] = useState([]); // State for stock risk data
   const [isNotificationVisible, setNotificationVisible] = useState(false);
 
   const toggleNotification = () => {
     setNotificationVisible(!isNotificationVisible);
   };
+
+  // Example data for Histogram
+  const stockRiskData = [
+    { name: "High Risk", count: 10 },
+    { name: "Medium Risk", count: 15 },
+    { name: "Low Risk", count: 20 },
+  ];
 
   useEffect(() => {
     const fetchSales = async () => {
@@ -52,20 +58,7 @@ const DashboardPage = () => {
       }
     };
 
-    const fetchStockRisk = async () => {
-      try {
-        const stockRisk = await getStockRisk(); // Fetch stock risk data
-        setStockRiskData([
-          { name: "High Risk", count: stockRisk.high_risk_count },
-          { name: "Low Risk", count: stockRisk.low_risk_count },
-        ]);
-      } catch (error) {
-        console.error("Error fetching stock risk:", error);
-      }
-    };
-
     fetchSales();
-    fetchStockRisk();
   }, []);
 
   // Move `data` inside the component so it gets updated dynamically
